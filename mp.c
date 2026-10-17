@@ -280,11 +280,14 @@ bool _mp_setup(void) {
 }
 
 void _mp_deinit(void) {
-    free(state.alt_sf_path);
+    /* broken? something within one of the delete_fluid_* functions is
+       causing a segfault atleast under linux */
 
+    if (state.alt_sf_path != NULL)
+        free(state.alt_sf_path);
+
+    _mp_unload();
     delete_fluid_audio_driver(state.fs_audio_driver);
-    if (state.fs_player != NULL)
-        delete_fluid_player(state.fs_player);
     delete_fluid_synth(state.fs_synth);
     delete_fluid_settings(state.fs_settings);
 }
