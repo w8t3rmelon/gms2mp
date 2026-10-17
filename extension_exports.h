@@ -7,7 +7,7 @@
 #define LIBEXPORT
 #endif
 
-LIBEXPORT double mp_set_use_win_gm_patches(double enabled);
+LIBEXPORT double mp_set_use_system_patches(double enabled);
 
 LIBEXPORT double mp_set_alt_sf_path(char *path);
 
@@ -27,6 +27,8 @@ LIBEXPORT double mp_get_pos_ticks(void);
 
 LIBEXPORT double mp_set_gain(double gain);
 LIBEXPORT double mp_get_gain(void);
+
+LIBEXPORT double mp_set_loop_count(double loops);
 
 LIBEXPORT double mp_init(void);
 LIBEXPORT double mp_setup(void);

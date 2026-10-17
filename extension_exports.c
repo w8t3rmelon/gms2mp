@@ -1,8 +1,8 @@
 #include "mp.h"
 #include "extension_exports.h"
 
-LIBEXPORT double mp_set_use_win_gm_patches(double enabled) {
-    _mp_set_use_win_gm_patches(enabled == 1.0 ? true : false);
+LIBEXPORT double mp_set_use_system_patches(double enabled) {
+    _mp_set_use_system_patches(enabled == 1.0 ? true : false);
     return 1.0;
 }
 
@@ -31,7 +31,7 @@ LIBEXPORT double mp_restart(void) {
     return _mp_restart() ? 1.0 : 0.0;
 }
 LIBEXPORT double mp_set_bpm(double bpm) {
-    return _mp_set_bpm((int)bpm) ? 1.0 : 0.0;
+    return _mp_set_bpm(bpm) ? 1.0 : 0.0;
 }
 LIBEXPORT double mp_get_bpm(void) {
     return (double)_mp_get_bpm();
