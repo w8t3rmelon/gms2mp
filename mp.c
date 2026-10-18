@@ -86,7 +86,7 @@ bool _mp_resume(void) {
 }
 
 bool _mp_unload(void) {
-    fluid_synth_all_notes_off(state.fs_synth, -1);
+    fluid_synth_system_reset(state.fs_synth);
     if (state.fs_player != NULL) {
         delete_fluid_player(state.fs_player);
         state.fs_player = NULL;
