@@ -61,6 +61,11 @@ LIBEXPORT double mp_set_loop_count(double loops) {
     return _mp_set_loop_count((int)loops) ? 1.0 : 0.0;
 }
 
+LIBEXPORT double mp_wait_until_finished(void) {
+    _mp_wait_until_finished();
+    return 1.0;
+}
+
 LIBEXPORT double mp_init(void) {
     _mp_init();
     return 1.0;

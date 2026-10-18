@@ -56,6 +56,8 @@ float _mp_get_gain(void);
 
 bool _mp_set_loop_count(int loops);
 
+void _mp_wait_until_finished(void);
+
 void _mp_init(void);
 bool _mp_setup(void);
 void _mp_deinit(void);

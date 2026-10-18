@@ -30,6 +30,8 @@ LIBEXPORT double mp_get_gain(void);
 
 LIBEXPORT double mp_set_loop_count(double loops);
 
+LIBEXPORT double mp_wait_until_finished(void);
+
 LIBEXPORT double mp_init(void);
 LIBEXPORT double mp_setup(void);
 LIBEXPORT double mp_deinit(void);

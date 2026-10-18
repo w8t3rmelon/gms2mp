@@ -165,6 +165,13 @@ bool _mp_set_loop_count(int loops) {
     return true;
 }
 
+void _mp_wait_until_finished(void) {
+    if (state.fs_player == NULL)
+        return;
+
+    fluid_player_join(state.fs_player);
+}
+
 void _mp_init(void) {
     state.use_system_patches = true;
 
