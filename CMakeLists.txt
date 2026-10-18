@@ -11,3 +11,14 @@ add_library(gms2mp SHARED
     src/extension_exports.c)
 
 target_link_libraries(gms2mp PRIVATE FluidSynth::libfluidsynth)
+
+# test program
+
+add_executable(midim2test
+    src/test_program/main.c)
+
+configure_file(testfiles/test.sf2 . COPYONLY)
+configure_file(testfiles/test.mid . COPYONLY)
+configure_file(testfiles/test2.mid . COPYONLY)
+
+target_link_libraries(midim2test PUBLIC gms2mp)
