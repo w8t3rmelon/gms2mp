@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(midim2 LANGUAGES C)
+project(midim2)
+
+set(CACHE MINGW_LINUX_CROSS_COMPILE BOOL OFF)
+
+if (MINGW_LINUX_CROSS_COMPILE)
+    include(cmake/mingw-linux-cross-compile.cmake)
+endif()
 
 find_package(FluidSynth CONFIG REQUIRED)
 

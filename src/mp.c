@@ -14,7 +14,7 @@ static bool is_using_wine() {
         return false;
     }
 
-    LPSTR (*CDECL wine_get_unix_file_name_ptr)(LPCWSTR)
+    FARPROC wine_get_unix_file_name_ptr
         = GetProcAddress(kernel32, "wine_get_unix_file_name");
 
     bool using_wine = wine_get_unix_file_name_ptr != NULL;
