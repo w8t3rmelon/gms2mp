@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(gms2mp LANGUAGES C)
+project(midim2 LANGUAGES C)
 
 find_package(FluidSynth CONFIG REQUIRED)
 
-add_library(gms2mp SHARED
+add_library(midim2 SHARED
     src/mp.h
     src/mp.c
     src/extension_exports.h
     src/extension_exports.c)
 
-target_link_libraries(gms2mp PRIVATE FluidSynth::libfluidsynth)
+target_link_libraries(midim2 PRIVATE FluidSynth::libfluidsynth)
 
 # test program
 
@@ -21,4 +21,4 @@ configure_file(testfiles/test.sf2 . COPYONLY)
 configure_file(testfiles/test.mid . COPYONLY)
 configure_file(testfiles/test2.mid . COPYONLY)
 
-target_link_libraries(midim2test PUBLIC gms2mp)
+target_link_libraries(midim2test PUBLIC midim2)
