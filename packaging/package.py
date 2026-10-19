@@ -33,7 +33,7 @@ def extension_func(name: str, returnType: int,
     return dict([
         ("$GMExtensionFunction", ""),
         ("%Name", name),
-        ("ArgCount", 0), # always zero?
+        ("argCount", 0), # always zero?
         ("args", args),
         ("documentation", ""),
         ("externalName", name),
