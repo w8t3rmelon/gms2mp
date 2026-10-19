@@ -67,7 +67,25 @@ bool abrupt_change(void) {
     return true;
 }
 
+bool load_dll_symbol(void) {
+    printf("load dll symbol\n");
+#ifdef _WIN32
+    HMODULE lib = LoadLibrary("libmidim2.dll");
+    if (lib == NULL) return false;
+
+    FARPROC setup_function = GetProcAddress(lib, "mp_setup");
+    if (setup_function == NULL) return false;
+
+    return true;
+#else
+    printf("this test doesn't apply to this platform, skipping\n");
+    return true;
+#endif
+
+}
+
 int main(int argc, char *argv[]) {
+    print_result(load_dll_symbol());
     print_result(default_settings());
     print_result(force_alt());
     print_result(abrupt_change());

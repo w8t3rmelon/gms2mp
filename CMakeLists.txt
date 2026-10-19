@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 
 project(midim2)
 
-set(CACHE MINGW_LINUX_CROSS_COMPILE BOOL OFF)
-
-if (MINGW_LINUX_CROSS_COMPILE)
-    include(cmake/mingw-linux-cross-compile.cmake)
-endif()
-
-find_package(FluidSynth CONFIG REQUIRED)
+set(enable-aufile OFF CACHE BOOL "compile support for sound file output" FORCE)
+set(enable-ipv6 OFF CACHE BOOL "enable IPv6 support" FORCE)
+set(enable-network OFF CACHE BOOL "compile JACK support (if it is available)" FORCE)
+set(enable-signalsmith OFF CACHE BOOL "compile Limiter and reverb engine support (requires signalsmith-audio)" FORCE)
+set(enable-sdl3 OFF CACHE BOOL "compile SDL3 audio support (if it is available)" FORCE)
+set(enable-libsndfile OFF CACHE BOOL "compile libsndfile support (if it is available)" FORCE)
+add_subdirectory(fluidsynth)
 
 add_library(midim2 SHARED
     src/mp.h
@@ -16,7 +16,7 @@ add_library(midim2 SHARED
     src/extension_exports.h
     src/extension_exports.c)
 
-target_link_libraries(midim2 PRIVATE FluidSynth::libfluidsynth)
+target_link_libraries(midim2 PRIVATE libfluidsynth)
 
 # test program
 
