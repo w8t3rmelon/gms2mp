@@ -4,11 +4,11 @@ cmake \
     -DCMAKE_TOOLCHAIN_FILE="cmake/mingw-linux-cross-compile.cmake" \
     -DCMAKE_BUILD_TYPE=Release \
     -GNinja \
-    -Bout/build && \
-    ninja -Cout/build -j12 && \
-cp out/build/fluidsynth/src/libfluidsynth-3.dll out/build && \
-strip out/build/libfluidsynth-3.dll && \
-strip out/build/libmidim2.dll \
+    -Bout/mingw && \
+    ninja -Cout/mingw -j12 && \
+cp out/mingw/fluidsynth/src/libfluidsynth-3.dll out/mingw && \
+strip out/mingw/libfluidsynth-3.dll && \
+strip out/mingw/libmidim2.dll \
     -Kmp_set_use_system_patches \
     -Kmp_set_alt_sf_path \
     -Kmp_play \
