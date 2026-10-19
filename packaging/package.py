@@ -7,22 +7,44 @@ import sys
 import shutil
 import hashlib
 import json
+import zipfile
 
 import xml.etree.ElementTree as ElementTree
 
 from enum import Enum
 from contextlib import chdir
-
-ExtensionReturnType = Enum("ExtensionReturnType", [
-    ("STRING", 1),
-    ("DOUBLE", 2)
-])
+from array import array
 
 static_files = [
     "static/metadata.json",
     "static/midim2.resource_order",
     "static/midim2.yyp"
 ]
+
+library_files = [
+    "../out/mingw/libfluidsynth-3.dll",
+    "../out/mingw/libmidim2.dll",
+    "../out/native/libfluidsynth.so.3",
+    "../out/native/libmidim2.so"
+]
+
+def extension_func(name: str, returnType: int, 
+                   args: array[int]):
+    return dict([
+        ("$GMExtensionFunction", ""),
+        ("%Name", name),
+        ("ArgCount", 0), # always zero?
+        ("args", args),
+        ("documentation", ""),
+        ("externalName", name),
+        ("help", ""),
+        ("hidden", False),
+        ("kind", 1), # unused afaik
+        ("name", name),
+        ("resourceType", "GMExtensionFunction"),
+        ("resourceVersion", "2.0"),
+        ("returnType", returnType)
+    ])
 
 metadata = dict([
     ("$GMExtension", ""),
@@ -46,7 +68,58 @@ metadata = dict([
             ("$GMExtensionFile", "v1"),
             ("%Name", ""),
             ("constants", []),
-            ("copyToTargets", 64),
+            ("copyToTargets", 192),
+            ("filename", "libmidim2.dll"),
+            ("init", "mp_init"),
+            ("final", "mp_deinit"),
+            ("functions", [
+                extension_func("mp_set_use_system_patches", 
+                               2, [2]),
+                extension_func("mp_set_alt_sf_path",
+                               2, [1]),
+                extension_func("mp_play", 2, [1]),
+                extension_func("mp_pause", 2, []),
+                extension_func("mp_resume", 2, []),
+                extension_func("mp_unload", 2, []),
+                extension_func("mp_seek", 2, [2]),
+                extension_func("mp_restart", 2, []),
+                extension_func("mp_set_bpm", 2, [2]),
+                extension_func("mp_get_bpm", 2, []),
+                extension_func("mp_get_division", 2, []),
+                extension_func("mp_get_tempo", 2, []),
+                extension_func("mp_get_length_ticks", 2, []),
+                extension_func("mp_get_pos_ticks", 2, []),
+                extension_func("mp_set_gain", 2, [2]),
+                extension_func("mp_get_gain", 2, []),
+                extension_func("mp_set_loop_count", 2, [2]),
+                extension_func("mp_wait_until_finished", 2, []),
+                extension_func("mp_init", 2, []),
+                extension_func("mp_setup", 2, []),
+                extension_func("mp_deinit", 2, [])
+            ]),
+            ("kind", 1),
+            ("name", ""),
+            ("origname", ""),
+            ("ProxyFiles", [
+                dict([
+                    ("$GMProxyFile", ""),
+                    ("%Name", "libmidim2.so"),
+                    ("name", "libmidim2.so"),
+                    ("resourceType", "GMProxyFile"),
+                    ("resourceVersion", "2.0"),
+                    ("TargetMask", 7)
+                ])
+            ]),
+            ("resourceType", "GMExtensionFile"),
+            ("resourceVersion", "2.0"),
+            ("uncompress", False),
+            ("usesRunnerInterface", False)
+        ]),
+        dict([
+            ("$GMExtensionFile", "v1"),
+            ("%Name", ""),
+            ("constants", []),
+            ("copyToTargets", 192),
             ("filename", "libfluidsynth-3.dll"),
             ("init", ""),
             ("final", ""),
@@ -54,7 +127,16 @@ metadata = dict([
             ("kind", 1),
             ("name", ""),
             ("origname", ""),
-            ("ProxyFiles", []),
+            ("ProxyFiles", [
+                dict([
+                    ("$GMProxyFile", ""),
+                    ("%Name", "libfluidsynth.so.3"),
+                    ("name", "libfluidsynth.so.3"),
+                    ("resourceType", "GMProxyFile"),
+                    ("resourceVersion", "2.0"),
+                    ("TargetMask", 7)
+                ])
+            ]),
             ("resourceType", "GMExtensionFile"),
             ("resourceVersion", "2.0"),
             ("uncompress", False),
@@ -123,12 +205,16 @@ def generate_yymanifest_from_files(*args: str):
             fileelement.text = filename
         ElementTree.ElementTree(rootelement).write(
             "yymanifest.xml", encoding="utf-8",
-            xml_declaration=True
-        )
+            xml_declaration=True)
+        
         print("yymanifest generation done")
 
 def generate_metadata_file():
-    pass
+    out = json.dumps(metadata)
+    outfile = open("out/extensions/ext_midim2/ext_midim2.yy", "w")
+    outfile.write(out)
+    outfile.close()
+    print("manifest (\".yy\" file) generation done")
 
 
 def copy_static_files():
@@ -136,23 +222,60 @@ def copy_static_files():
         shutil.copy(filename, "out/")
     print("static files done")
 
+def copy_libraries():
+    if not os.path.exists("../out/native"):
+        print("please run build_release_native.sh!")
+        exit(1)
+    if not os.path.exists("../out/mingw"):
+        print("please run build_release_mingw.sh!")
+        exit(1)
+
+    for filename in library_files:
+        shutil.copy(filename, "out/extensions/ext_midim2/")
+
+    print("library copying done")
+
+def zip_package():
+    shutil.make_archive("ext_midim2", "zip", "out/")
+    os.rename("ext_midim2.zip", "ext_midim2.yymps")
+    print("zipped up!")
+
+
 # commands
 
 def clean():
     if os.path.exists("out"):
         shutil.rmtree("out")
     else:
-        print("nothing to clean!")
+        print("out directory doesn't exist, not cleaning")
+    
+    if os.path.exists("ext_midim2.yymps"):
+        os.remove("ext_midim2.yymps")
+    else:
+        print("final archive doesn't exist, not cleaning")
 
 def make():
     clean()
     os.mkdir("out")
     copy_static_files()
+    
+    os.mkdir("out/extensions")
+    os.mkdir("out/extensions/ext_midim2")
+    copy_libraries()
+    generate_metadata_file()
+
     generate_yymanifest_from_files(
         "metadata.json",
         "midim2.resource_order",
-        "midim2.yyp"
+        "midim2.yyp",
+        "extensions/ext_midim2/ext_midim2.yy",
+        "extensions/ext_midim2/libfluidsynth-3.dll",
+        "extensions/ext_midim2/libmidim2.dll",
+        "extensions/ext_midim2/libfluidsynth.so.3",
+        "extensions/ext_midim2/libmidim2.so"
     )
+
+    zip_package()
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

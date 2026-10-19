@@ -86,3 +86,6 @@ CMakeLists.txt.user*
 out
 vcpkg_installed
 .vs
+
+packaging/out
+packaging/*.yymps
