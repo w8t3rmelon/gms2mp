@@ -4,7 +4,7 @@ project(midim2)
 
 set(enable-aufile OFF CACHE BOOL "compile support for sound file output" FORCE)
 set(enable-ipv6 OFF CACHE BOOL "enable IPv6 support" FORCE)
-set(enable-network OFF CACHE BOOL "compile JACK support (if it is available)" FORCE)
+set(enable-network OFF CACHE BOOL "enable network support (requires BSD sockets)" FORCE)
 set(enable-signalsmith OFF CACHE BOOL "compile Limiter and reverb engine support (requires signalsmith-audio)" FORCE)
 set(enable-sdl3 OFF CACHE BOOL "compile SDL3 audio support (if it is available)" FORCE)
 set(enable-libsndfile OFF CACHE BOOL "compile libsndfile support (if it is available)" FORCE)
