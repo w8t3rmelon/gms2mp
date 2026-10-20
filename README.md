@@ -8,8 +8,6 @@ a simple midi playback extension for gamemaker powered by
 this extension is still actively in development so there may be some bugs /
 breaking changes along the way
 
-docs are also still wip (sorry :[)
-
 ## installing
 go to the releases tab on the right side, and download the .yymps file from the
 latest release (you can also download the .yyp which includes a demo project)
@@ -19,7 +17,7 @@ open your gamemaker project and go to tools > import local package. press
 use
 
 ## using
-see [here](DOCS.md) for documentation of all functions 
+see [here](DOCS.md) for documentation and a small example
 
 ## compiling
 (just keep in mind that the hellspawn of scripts i've made for this all kinda
