@@ -41,7 +41,7 @@ them in out/native and out/mingw respectively
 
 ### making a "local package"
 run `packaging/package.py`. it will pull the built dll/so files previously
-created through running the build scripts and also generate some files
+created as a result of running the build scripts and also generate some files
 gamemaker expects in a local package (alot of stuff there is hardcoded atm)
 
 when done, it should create a file named `ext_midim2.yymps` that you can
