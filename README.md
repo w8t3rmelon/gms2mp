@@ -46,3 +46,10 @@ gamemaker expects in a local package (alot of stuff there is hardcoded atm)
 
 when done, it should create a file named `ext_midim2.yymps` that you can
 import into your gamemaker project (tools > import local package)
+
+## special thanks
+
+- [fluidsynth](https://github.com/fluidsynth/fluidsynth) for being the lifeblood
+of this entire project
+- samwow and cubitoishere for the name idea
+- everyone who cheered me on throughout development
